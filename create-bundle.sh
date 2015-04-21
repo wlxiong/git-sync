@@ -14,7 +14,7 @@ if [ -n "$FROM_REF" ]; then
     BUNDLE="$HOSTNAME-$FROM_REF-$HEAD_HASH.bundle"
     git bundle create "$DIR/$BUNDLE" $FROM_REF..$HEAD_HASH --branches --tags > /dev/null
 else
-    BUNDLE="$HOSTNAME-INITIAL-$HEAD_HASH.bundle"
+    BUNDLE="$HOSTNAME-0000000-$HEAD_HASH.bundle"
     git bundle create "$DIR/$BUNDLE" $HEAD_HASH --branches --tags > /dev/null
 fi
 echo "$BUNDLE"
