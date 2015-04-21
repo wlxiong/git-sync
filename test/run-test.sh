@@ -54,14 +54,22 @@ sync_repos() {
 
 init_repos HostA.git
 init_repos HostB.git
+init_repos HostC.git
 
 for i in {1..2}; do
     # update HostA
     update_repos HostA.git
     # update HostB
     update_repos HostB.git
+    # update HostC
+    update_repos HostC.git
+
     # sync: HostA <- HostB
     sync_repos HostA HostB
     # sync: HostB <- HostA
     sync_repos HostB HostA
+    # sync: HostA <- HostC
+    sync_repos HostA HostC
+    # sync: HostC <- HostA
+    sync_repos HostC HostA
 done
