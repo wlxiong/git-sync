@@ -36,3 +36,7 @@ git-sync
    c) 然后将 my_file.version-<tag1>.txt 和 my_file.version-<tag2>.txt 加入本地维护的 git 库中, 原来的 my_file.txt
       则从 git 库中删除.
    d) 使用 (a)-(c) 处理所有的冲突文件后, 对本地 git 库做 commit 操作, 于是本次同步结束.
+
+   类似的策略使用在 git-annex 中, 参见链接
+       http://git-annex.branchable.com/automatic_conflict_resolution/
+       http://git-annex.branchable.com/design/assistant/blog/day_18__merging/
