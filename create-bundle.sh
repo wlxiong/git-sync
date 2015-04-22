@@ -7,8 +7,8 @@ if [ -z "$REPOS" ]; then
     echo "usage: $0 <repos> [base ref]"
     exit 1
 fi
-cd "$REPOS"
 
+cd "$REPOS"
 HEAD_HASH=$(git show master -s --pretty=format:%h HEAD --abbrev=7)
 if [ -n "$FROM_REF" ]; then
     BUNDLE="$HOSTNAME-$FROM_REF-$HEAD_HASH.bundle"

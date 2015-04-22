@@ -5,7 +5,7 @@ REPOS=$1
 REMOTE=$2
 BUNDLE=$3
 if [ -z "$REPOS" ] || [ -z "$REMOTE" ] || [ -z "$BUNDLE" ]; then
-    echo "usage: $0 <repos> <remote host> <bundle file>"
+    echo "usage: $0 <repos> <remote> <bundle file>"
     exit 1
 fi
 
@@ -13,14 +13,22 @@ rename_file() {
     local file=$1
     local filehash=$(git hash-object "$file")
     local filehash=${filehash:0:7}
-    if echo "$file" | grep '\.'; then
+    # if hash tag already exists in filename, skip rename
+    if echo "$file" | grep -q "version-$filehash"; then
+        echo "Hash tag already exists in filename $file"
+        git add "$file"
+        return 0
+    fi
+    local renamed=""
+    # create a hash tag and rename file
+    if echo "$file" | grep -q '\.'; then
         local extension="${file##*.}"
         local filename="${file%.*}"
         local renamed="$filename.version-$filehash.$extension"
     else
         local renamed="$file.version-$filehash"
     fi
-    mv "$file" "$renamed"
+    mv -v "$file" "$renamed"
     git add "$renamed"
     rm -f "$file"
 }
@@ -28,7 +36,7 @@ rename_file() {
 cd "$REPOS"
 git bundle verify "$DIR/$BUNDLE"
 git fetch "$DIR/$BUNDLE" refs/heads/master:refs/remotes/$REMOTE/master
-if git merge refs/remotes/$REMOTE/master; then
+if git merge -v refs/remotes/$REMOTE/master; then
     exit 0
 fi
 

@@ -6,12 +6,6 @@ export PATH="$PWD:$PWD/..:$PATH"
 
 rm -rf *.bundle *.git
 
-init_repos() {
-    local REPOS=$1
-    rm -rf "$REPOS" && mkdir "$REPOS"
-    ( cd "$REPOS" && git init && git config core.autocrlf false)
-}
-
 update_repos() {
     local REPOS=$1
     pushd "$REPOS"
@@ -22,39 +16,10 @@ update_repos() {
     sleep 1
 }
 
-create_bundle() {
-    local REPOS=$1
-    local REF=$2
-    BUNDLE=$(env HOSTNAME="$REPOS" create-bundle.sh "$REPOS" "$REF")
-}
-
-apply_bundle() {
-    local REPOS=$1
-    local REMOTE=$2
-    local BUNDLE=$3
-    apply-bundle.sh "$REPOS" "$REMOTE" "$BUNDLE"
-}
-
-remote_ref() {
-    local REPOS=$1
-    local REMOTE=$2
-    REMOTE_REF=$(show-remote-ref.sh "$REPOS" "$REMOTE")
-}
-
-sync_repos() {
-    local LOCAL=$1
-    local REMOTE=$2
-    # find latest commit of REMOTE in LOCAL.git
-    remote_ref "$LOCAL.git" "$REMOTE"
-    # export changes: REMOTE host
-    create_bundle "$REMOTE.git" "$REMOTE_REF"
-    # import changes: LOCAL host <- REMOTE host
-    apply_bundle "$LOCAL.git" "$REMOTE" "$BUNDLE"
-}
-
-init_repos HostA.git
-init_repos HostB.git
-init_repos HostC.git
+rm -rf HostA.git HostB.git HostC.git
+init-repos.sh HostA.git
+init-repos.sh HostB.git
+init-repos.sh HostC.git
 
 for i in {1..2}; do
     # update HostA
@@ -65,11 +30,17 @@ for i in {1..2}; do
     update_repos HostC.git
 
     # sync: HostA <- HostB
-    sync_repos HostA HostB
+    sync-repos.sh HostA HostB
     # sync: HostB <- HostA
-    sync_repos HostB HostA
+    sync-repos.sh HostB HostA
+
     # sync: HostA <- HostC
-    sync_repos HostA HostC
+    sync-repos.sh HostA HostC
     # sync: HostC <- HostA
-    sync_repos HostC HostA
+    sync-repos.sh HostC HostA
+
+    # sync: HostB <- HostC
+    sync-repos.sh HostB HostC
+    # sync: HostC <- HostB
+    sync-repos.sh HostC HostB
 done
