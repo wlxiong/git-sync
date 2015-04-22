@@ -1,4 +1,7 @@
 #!/bin/sh -e
 
 TIME="$(date +%s)"
-echo "$TIME-$RANDOM" > "$TIME-$RANDOM.txt"
+RAND=$(printf "%05d" $RANDOM)
+FILE="$TIME-$RAND.txt"
+echo "*** create $FILE"
+echo "$TIME-$RANDOM" > "$FILE"
