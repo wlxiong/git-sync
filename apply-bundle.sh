@@ -36,7 +36,7 @@ rename_file() {
 cd "$REPOS"
 git bundle verify "$DIR/$BUNDLE"
 git fetch "$DIR/$BUNDLE" refs/heads/master:refs/remotes/$REMOTE/master
-if git merge -v refs/remotes/$REMOTE/master; then
+if git merge -v --no-edit refs/remotes/$REMOTE/master; then
     exit 0
 fi
 
