@@ -11,26 +11,22 @@ fi
 
 rename_file() {
     local file=$1
-    local filehash=$(git hash-object "$file")
-    local filehash=${filehash:0:7}
-    # if hash tag already exists in filename, skip rename
-    if echo "$file" | grep -q "version-$filehash"; then
-        echo "Hash tag already exists in filename $file"
-        git add "$file"
-        return 0
-    fi
-    local renamed=""
-    # create a hash tag and rename file
-    if echo "$file" | grep -q '\.'; then
+    local hashtag=$(git hash-object "$file")
+    local hashtag=${hashtag:0:7}
+    if echo "$file" | grep -qE "version-[a-f0-9]{7}"; then
+        # if hash tag already exists in filename, update it
+        echo "Hash tag already exists in filename $file, update if necessary"
+        local renamed=$(echo "$file" | sed "s/version-[a-f0-9]{7}/version-$hashtag/g")
+    elif echo "$file" | grep -q '\.'; then
+        # create a hash tag and rename file
         local extension="${file##*.}"
         local filename="${file%.*}"
-        local renamed="$filename.version-$filehash.$extension"
+        local renamed="$filename.version-$hashtag.$extension"
     else
-        local renamed="$file.version-$filehash"
+        local renamed="$file.version-$hashtag"
     fi
-    mv -v "$file" "$renamed"
+    [ "$file" != "$renamed" ] && mv -v "$file" "$renamed"
     git add "$renamed"
-    rm -f "$file"
 }
 
 cd "$REPOS"
