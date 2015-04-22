@@ -1,7 +1,8 @@
 #!/bin/sh -e
 
+HOST=${1:-UNKNOWNHOST}
 TIME="$(date +%s)"
 RAND=$(printf "%05d" $RANDOM)
-FILE="$TIME-$RAND.txt"
+FILE="$HOST-$TIME-$RAND.txt"
 echo "*** create $FILE"
 echo "$TIME-$RAND" > "$FILE"

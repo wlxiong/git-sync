@@ -7,9 +7,9 @@ export PATH="$PWD:$PWD/..:$PATH"
 rm -rf *.bundle *.git
 
 update_repos() {
-    local REPOS=$1
-    pushd "$REPOS"
-    new-file.sh
+    local HOST=$1
+    pushd "$HOST.git"
+    new-file.sh "$HOST"
     append-file.sh
     git-commit.sh
     popd
@@ -23,11 +23,11 @@ init-repos.sh HostC.git
 
 for i in {1..2}; do
     # update HostA
-    update_repos HostA.git
+    update_repos HostA
     # update HostB
-    update_repos HostB.git
+    update_repos HostB
     # update HostC
-    update_repos HostC.git
+    update_repos HostC
 
     # sync: HostA <- HostB
     sync-repos.sh HostA HostB
