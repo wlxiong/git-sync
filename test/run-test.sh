@@ -11,7 +11,7 @@ update_repos() {
     pushd "$REPOS"
     new-file.sh
     append-file.sh
-    COMMIT=$(git-commit.sh)
+    git-commit.sh
     popd
     sleep 1
 }

@@ -8,4 +8,4 @@ if [ -z "$REPOS" -o -z "$REMOTE" ]; then
 fi
 
 cd "$REPOS"
-echo $(git show-ref --hash --abbrev=7 refs/remotes/$REMOTE/master)
+echo "$(git show-ref --hash --abbrev=7 refs/remotes/$REMOTE/master)"

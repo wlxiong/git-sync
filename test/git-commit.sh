@@ -1,6 +1,7 @@
 #!/bin/sh -e
 
 TIME="$(date +%s)"
-git add . > /dev/null
-git commit -m "$TIME-$RANDOM" > /dev/null
-echo "$(git show master -s --pretty=format:%h HEAD --abbrev=7)"
+RAND=$(printf "%05d" $RANDOM)
+git add .
+git commit -m "$TIME-$RAND"
+echo "*** commit $(git show master -s --pretty=format:%h HEAD --abbrev=7)"
