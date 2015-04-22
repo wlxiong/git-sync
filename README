@@ -21,7 +21,8 @@ git-sync
    告诉 HostB, HostA 已经拥有 HostB 上截止到 d7932d2 的所有修改.
 
 5) 一个设备收到其他设备发来的 "SYNC <SHA1>" 请求时, 它会将 <SHA1>..<refs/heads/master> 之间的所有 commit
-   存在一个 *.bundle 文件中, 并将该文件发给发出请求的设备. 这样就实现了简单的增量同步.
+   导出到一个 *.bundle 文件中 (使用命令 git bundle create 生成), 并将该文件回复给发出请求的设备. 这样就实现了
+   简单的增量同步.
 
 6) 一个设备收到其他设备回复的 *.bundle 文件后, 它首先将该文件导入到本地的远程分支 (refs/remotes/*) 上,
    然后尝试将远程分支 merge 到自己的 git 库的 master 分支. 如果没有出现任何冲突, 那么这次同步就成功了.
