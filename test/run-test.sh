@@ -37,11 +37,9 @@ for i in {1..2}; do
     # sync: HostA <-> HostB
     sync-repos.sh HostA HostB
     sync-repos.sh HostB HostA
-
     # sync: HostA <-> HostC
     sync-repos.sh HostA HostC
     sync-repos.sh HostC HostA
-
     # sync: HostB <-> HostC
     sync-repos.sh HostB HostC
     sync-repos.sh HostC HostB
@@ -49,4 +47,14 @@ for i in {1..2}; do
     merge_file HostA
     merge_file HostB
     merge_file HostC
+
+    # sync: HostA <-> HostB
+    sync-repos.sh HostA HostB
+    sync-repos.sh HostB HostA
+    # sync: HostA <-> HostC
+    sync-repos.sh HostA HostC
+    sync-repos.sh HostC HostA
+    # sync: HostB <-> HostC
+    sync-repos.sh HostB HostC
+    sync-repos.sh HostC HostB
 done

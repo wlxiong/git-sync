@@ -39,6 +39,10 @@ echo "Latest commit of $REMOTE at $LOCAL: ${REMOTE_REF:-(none)}"
 # export changes: REMOTE host
 echo "Creating bundle at $REMOTE based on ${REMOTE_REF:-(none)}"
 create_bundle "$REMOTE.git" "$REMOTE_REF"
+if [ -z "$BUNDLE" ]; then
+    echo "No update at $REMOTE"
+    exit 0
+fi
 # import changes: LOCAL host <- REMOTE host
 echo "Applying bundle $BUNDLE at $LOCAL"
 apply_bundle "$LOCAL.git" "$REMOTE" "$BUNDLE"

@@ -10,6 +10,9 @@ fi
 
 cd "$REPOS"
 HEAD_HASH=$(git show master -s --pretty=format:%h HEAD --abbrev=7)
+if [ "$FROM_REF" = "$HEAD_HASH" ]; then
+    exit 0
+fi
 if [ -n "$FROM_REF" ]; then
     BUNDLE="$HOSTNAME-$FROM_REF-$HEAD_HASH.bundle"
     git bundle create "$DIR/$BUNDLE" $FROM_REF..$HEAD_HASH --branches --tags > /dev/null
