@@ -40,3 +40,10 @@ git-sync
    类似的策略使用在 git-annex 中, 参见链接
        http://git-annex.branchable.com/automatic_conflict_resolution/
        http://git-annex.branchable.com/design/assistant/blog/day_18__merging/
+
+
+TODO List
+=========
+
+1) 删除较老的 commit 历史 (snapshot and cut history commits).
+2) 文本文件: merge or not merge
