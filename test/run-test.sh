@@ -16,31 +16,37 @@ update_repos() {
     sleep 1
 }
 
+merge_file() {
+    local HOST=$1
+    pushd "$HOST.git"
+    merge-file.sh
+    git-commit.sh
+    popd
+}
+
 rm -rf HostA.git HostB.git HostC.git
 init-repos.sh HostA.git
 init-repos.sh HostB.git
 init-repos.sh HostC.git
 
 for i in {1..2}; do
-    # update HostA
     update_repos HostA
-    # update HostB
     update_repos HostB
-    # update HostC
     update_repos HostC
 
-    # sync: HostA <- HostB
+    # sync: HostA <-> HostB
     sync-repos.sh HostA HostB
-    # sync: HostB <- HostA
     sync-repos.sh HostB HostA
 
-    # sync: HostA <- HostC
+    # sync: HostA <-> HostC
     sync-repos.sh HostA HostC
-    # sync: HostC <- HostA
     sync-repos.sh HostC HostA
 
-    # sync: HostB <- HostC
+    # sync: HostB <-> HostC
     sync-repos.sh HostB HostC
-    # sync: HostC <- HostB
     sync-repos.sh HostC HostB
+
+    merge_file HostA
+    merge_file HostB
+    merge_file HostC
 done

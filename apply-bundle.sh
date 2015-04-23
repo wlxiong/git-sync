@@ -13,10 +13,10 @@ rename_file() {
     local file=$1
     local hashtag=$(git hash-object "$file")
     local hashtag=${hashtag:0:7}
-    if echo "$file" | grep -qE "version-[a-f0-9]{7}"; then
+    if echo "$file" | grep -q "version-[a-f0-9]\{7\}"; then
         # if hash tag already exists in filename, update it
         echo "Hash tag already exists in filename $file, update if necessary"
-        local renamed=$(echo "$file" | sed "s/version-[a-f0-9]{7}/version-$hashtag/g")
+        local renamed=$(echo "$file" | sed "s/version-[a-f0-9]\{7\}/version-$hashtag/g")
     elif echo "$file" | grep -q '\.'; then
         # create a hash tag and rename file
         local extension="${file##*.}"
@@ -32,7 +32,7 @@ rename_file() {
 cd "$REPOS"
 git bundle verify "$DIR/$BUNDLE"
 git fetch "$DIR/$BUNDLE" refs/heads/master:refs/remotes/$REMOTE/master
-if git merge -v --no-edit refs/remotes/$REMOTE/master; then
+if git merge -v --no-edit -s recursive -X rename-threshold=100 refs/remotes/$REMOTE/master; then
     exit 0
 fi
 
